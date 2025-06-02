@@ -1063,21 +1063,12 @@ const GetUIOpSettingMenu = () => {
     ]
 }
 
-// 添加主题状态  
-const [currentTheme, setCurrentTheme] = useState<'dark' | 'system'>('system')  
-  
-// 从本地存储获取主题设置  
-useEffect(() => {  
-    getLocalValue('yakit-theme').then((theme: string) => {  
-        if (theme === 'dark' || theme === 'system') {  
-            setCurrentTheme(theme)  
-        }  
-    })  
-}, [])
-
 const UIOpSetting: React.FC<UIOpSettingProp> = React.memo((props) => {
     const {engineMode, onEngineModeChange, typeCallback} = props
 
+    // 添加主题状态  
+    const [currentTheme, setCurrentTheme] = useState<'dark' | 'system'>('system')  
+  
     const [runNodeModalVisible, setRunNodeModalVisible] = useState<boolean>(false)
     const [show, setShow] = useState<boolean>(false)
     const [dataBaseUpdateVisible, setDataBaseUpdateVisible] = useState<boolean>(false)
@@ -1086,9 +1077,34 @@ const UIOpSetting: React.FC<UIOpSettingProp> = React.memo((props) => {
     const {dynamicStatus} = yakitDynamicStatus()
     const {delTemporaryProject} = useTemporaryProjectStore()
 
+    
+    // 初始化主题设置  
+    useEffect(() => {  
+        getLocalValue('yakit-theme').then((theme: string) => {  
+            if (theme === 'dark' || theme === 'system') {  
+                setCurrentTheme(theme)  
+            }  
+        })  
+    }, [])  
+  
+    // 监听系统主题变化  
+    useEffect(() => {  
+        if (currentTheme === 'system') {  
+            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')  
+            const handleChange = (e: MediaQueryListEvent) => {  
+                document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light')  
+            }  
+              
+            handleChange(mediaQuery)  
+            mediaQuery.addEventListener('change', handleChange)  
+            return () => mediaQuery.removeEventListener('change', handleChange)  
+        }  
+    }, [currentTheme])
+    
     useEffect(() => {
         onIsCVEDatabaseReady()
     }, [])
+    
     const onIsCVEDatabaseReady = useMemoizedFn(() => {
         ipcRenderer
             .invoke("IsCVEDatabaseReady")
