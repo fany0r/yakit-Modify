@@ -2,7 +2,7 @@ import React from 'react'
 import { Button } from 'antd'  
 import { SunOutlined, MoonOutlined } from '@ant-design/icons'  
 import { useTheme } from '@/hooks/useTheme'  
-import styles from './ThemeSwitch.module.scss'  
+import styles from "./ThemeSwitch.module.scss"
   
 export const ThemeSwitch: React.FC = () => {  
     const { theme, toggleTheme } = useTheme()  

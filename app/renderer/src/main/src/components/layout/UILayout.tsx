@@ -98,6 +98,7 @@ import {
 import moment from "moment"
 
 import { useTheme } from "@/hook/useTheme"
+import { ThemeSwitch } from "./ThemeSwitch/ThemeSwitch"
 
 const {ipcRenderer} = window.require("electron")
 
