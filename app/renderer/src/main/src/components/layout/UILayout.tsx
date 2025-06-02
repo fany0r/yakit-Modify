@@ -97,6 +97,8 @@ import {
 } from "./utils"
 import moment from "moment"
 
+import { useTheme } from "@/hooks/useTheme"
+
 const {ipcRenderer} = window.require("electron")
 
 const DefaultCredential: YaklangEngineWatchDogCredential = {
@@ -115,6 +117,9 @@ export interface UILayoutProp {
 
 const UILayout: React.FC<UILayoutProp> = (props) => {
     /** ---------- 软件级功能设置 Start ---------- */
+
+    const { theme, toggleTheme } = useTheme()
+
     // 顶部是否可以拖拽并移动软件位置
     const [drop, setDrop] = useState<boolean>(true)
     useEffect(() => {
@@ -131,35 +136,6 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
             .then(() => {})
             .catch(() => {})
     }
-
-    // // 添加主题状态  
-    // const [currentTheme, setCurrentTheme] = useState<'dark' | 'system'>('system')  
-      
-    // // 初始化主题设置  
-    // useEffect(() => {  
-    //     getLocalValue('yakit-theme').then((theme: string) => {  
-    //         if (theme === 'dark' || theme === 'system') {  
-    //             setCurrentTheme(theme)  
-    //         }  
-    //     })  
-    // }, [])  
-      
-    // // 监听系统主题变化  
-    // useEffect(() => {  
-    //     if (currentTheme === 'system') {  
-    //         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')  
-    //         const handleChange = (e: MediaQueryListEvent) => {  
-    //             document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light')  
-    //         }  
-              
-    //         // 初始设置  
-    //         handleChange(mediaQuery)  
-              
-    //         mediaQuery.addEventListener('change', handleChange)  
-    //         return () => mediaQuery.removeEventListener('change', handleChange)  
-    //     }  
-    // }, [currentTheme])
-    
     /** ---------- 软件级功能设置 End ---------- */
 
     /** ---------- 软件状态相关属性 Start ---------- */
@@ -1842,6 +1818,8 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
                                             engineLink={engineLink}
                                         />
                                     </div>
+                                    {/* 添加主题切换按钮 */}  
+                                    <ThemeSwitch /> 
                                     <div className={styles["short-divider-wrapper"]}>
                                         <div className={styles["divider-style"]}></div>
                                     </div>

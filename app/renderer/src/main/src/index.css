@@ -1,17 +1,25 @@
 @import "~antd/dist/antd.css";
 
 :root {  
+    /* 浅色主题 */  
     --yakit-bg-color: #ffffff;  
-    --yakit-text-color: #000000;  
-    --yakit-primary-color: #3370ff;  
-    /* 其他浅色主题变量 */  
+    --yakit-text-color: #31343f;  
+    --yakit-border-color: #eaecf3;  
+    --yakit-header-bg: #ffffff;  
+    --yakit-header-color: #85899e;  
+    --yakit-primary-1: #f0f2f5;  
+    --yakit-primary-5: #3370ff;  
 }  
   
-[data-theme="dark"] {  
-    --yakit-bg-color: #1a1a1a;  
+[data-theme='dark'] {  
+    /* 深色主题 */  
+    --yakit-bg-color: #1a1d29;  
     --yakit-text-color: #ffffff;  
-    --yakit-primary-color: #4080ff;  
-    /* 深色主题变量 */  
+    --yakit-border-color: #2a2d3a;  
+    --yakit-header-bg: #1a1d29;  
+    --yakit-header-color: #b4bbca;  
+    --yakit-primary-1: #2a2d3a;  
+    --yakit-primary-5: #4992ff;  
 }
 
 body {

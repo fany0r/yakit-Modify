@@ -1045,8 +1045,6 @@ const GetUIOpSettingMenu = () => {
                 {key: "reverse", label: "全局反连"},
                 {key: "agent", label: "系统代理"},
                 // { key: "engineVar",label: "引擎环境变量" },
-                {key: "theme-dark", label: "深色主题"},
-                {key: "theme-system", label: "跟随系统"},
                 {key: "config-network", label: "全局配置"}
             ]
         },
@@ -1066,9 +1064,6 @@ const GetUIOpSettingMenu = () => {
 const UIOpSetting: React.FC<UIOpSettingProp> = React.memo((props) => {
     const {engineMode, onEngineModeChange, typeCallback} = props
 
-    // 添加主题状态  
-    const [currentTheme, setCurrentTheme] = useState<'dark' | 'system'>('system')  
-  
     const [runNodeModalVisible, setRunNodeModalVisible] = useState<boolean>(false)
     const [show, setShow] = useState<boolean>(false)
     const [dataBaseUpdateVisible, setDataBaseUpdateVisible] = useState<boolean>(false)
@@ -1077,34 +1072,9 @@ const UIOpSetting: React.FC<UIOpSettingProp> = React.memo((props) => {
     const {dynamicStatus} = yakitDynamicStatus()
     const {delTemporaryProject} = useTemporaryProjectStore()
 
-    
-    // 初始化主题设置  
-    useEffect(() => {  
-        getLocalValue('yakit-theme').then((theme: string) => {  
-            if (theme === 'dark' || theme === 'system') {  
-                setCurrentTheme(theme)  
-            }  
-        })  
-    }, [])  
-  
-    // 监听系统主题变化  
-    useEffect(() => {  
-        if (currentTheme === 'system') {  
-            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')  
-            const handleChange = (e: MediaQueryListEvent) => {  
-                document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light')  
-            }  
-              
-            handleChange(mediaQuery)  
-            mediaQuery.addEventListener('change', handleChange)  
-            return () => mediaQuery.removeEventListener('change', handleChange)  
-        }  
-    }, [currentTheme])
-    
     useEffect(() => {
         onIsCVEDatabaseReady()
     }, [])
-    
     const onIsCVEDatabaseReady = useMemoizedFn(() => {
         ipcRenderer
             .invoke("IsCVEDatabaseReady")
@@ -1118,12 +1088,6 @@ const UIOpSetting: React.FC<UIOpSettingProp> = React.memo((props) => {
     const menuSelect = useMemoizedFn((type: string) => {
         if (show) setShow(false)
         switch (type) {
-            case "theme-dark":  
-                handleThemeChange('dark')  
-                break  
-            case "theme-system":  
-                handleThemeChange('system')  
-                break  
             case "cve-database-all-update":
                 setDataBaseUpdateVisible(true)
                 setIsDiffUpdate(false)
@@ -1242,22 +1206,6 @@ const UIOpSetting: React.FC<UIOpSettingProp> = React.memo((props) => {
             default:
                 return
         }
-    })
-
-    const handleThemeChange = useMemoizedFn((theme: 'dark' | 'system') => {  
-        setCurrentTheme(theme)  
-        setLocalValue('yakit-theme', theme)  
-          
-        // 应用主题  
-        if (theme === 'dark') {  
-            document.documentElement.setAttribute('data-theme', 'dark')  
-        } else {  
-            // 跟随系统  
-            const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches  
-            document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light')  
-        }  
-          
-        yakitNotify("success", `已切换到${theme === 'dark' ? '深色' : '跟随系统'}主题`)  
     })
 
     const menu = (
