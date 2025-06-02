@@ -97,7 +97,7 @@ import {
 } from "./utils"
 import moment from "moment"
 
-import { useTheme } from "@/hooks/useTheme"
+import { useTheme } from "@/hook/useTheme"
 
 const {ipcRenderer} = window.require("electron")
 
