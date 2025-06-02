@@ -1,5 +1,19 @@
 @import "~antd/dist/antd.css";
 
+:root {  
+    --yakit-bg-color: #ffffff;  
+    --yakit-text-color: #000000;  
+    --yakit-primary-color: #3370ff;  
+    /* 其他浅色主题变量 */  
+}  
+  
+[data-theme="dark"] {  
+    --yakit-bg-color: #1a1a1a;  
+    --yakit-text-color: #ffffff;  
+    --yakit-primary-color: #4080ff;  
+    /* 深色主题变量 */  
+}
+
 body {
     overflow-x: hidden;
     overflow-y: auto;
