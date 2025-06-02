@@ -1045,6 +1045,8 @@ const GetUIOpSettingMenu = () => {
                 {key: "reverse", label: "全局反连"},
                 {key: "agent", label: "系统代理"},
                 // { key: "engineVar",label: "引擎环境变量" },
+                {key: "theme-dark", label: "深色主题"},
+                {key: "theme-system", label: "跟随系统"},
                 {key: "config-network", label: "全局配置"}
             ]
         },
@@ -1060,6 +1062,18 @@ const GetUIOpSettingMenu = () => {
         // {key: "setShortcutKey", label: "快捷键设置"}
     ]
 }
+
+// 添加主题状态  
+const [currentTheme, setCurrentTheme] = useState<'dark' | 'system'>('system')  
+  
+// 从本地存储获取主题设置  
+useEffect(() => {  
+    getLocalValue('yakit-theme').then((theme: string) => {  
+        if (theme === 'dark' || theme === 'system') {  
+            setCurrentTheme(theme)  
+        }  
+    })  
+}, [])
 
 const UIOpSetting: React.FC<UIOpSettingProp> = React.memo((props) => {
     const {engineMode, onEngineModeChange, typeCallback} = props
@@ -1088,6 +1102,12 @@ const UIOpSetting: React.FC<UIOpSettingProp> = React.memo((props) => {
     const menuSelect = useMemoizedFn((type: string) => {
         if (show) setShow(false)
         switch (type) {
+            case "theme-dark":  
+                handleThemeChange('dark')  
+                break  
+            case "theme-system":  
+                handleThemeChange('system')  
+                break  
             case "cve-database-all-update":
                 setDataBaseUpdateVisible(true)
                 setIsDiffUpdate(false)
@@ -1206,6 +1226,22 @@ const UIOpSetting: React.FC<UIOpSettingProp> = React.memo((props) => {
             default:
                 return
         }
+    })
+
+    const handleThemeChange = useMemoizedFn((theme: 'dark' | 'system') => {  
+        setCurrentTheme(theme)  
+        setLocalValue('yakit-theme', theme)  
+          
+        // 应用主题  
+        if (theme === 'dark') {  
+            document.documentElement.setAttribute('data-theme', 'dark')  
+        } else {  
+            // 跟随系统  
+            const isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches  
+            document.documentElement.setAttribute('data-theme', isDarkMode ? 'dark' : 'light')  
+        }  
+          
+        yakitNotify("success", `已切换到${theme === 'dark' ? '深色' : '跟随系统'}主题`)  
     })
 
     const menu = (
