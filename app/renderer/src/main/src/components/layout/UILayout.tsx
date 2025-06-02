@@ -132,33 +132,33 @@ const UILayout: React.FC<UILayoutProp> = (props) => {
             .catch(() => {})
     }
 
-    // 添加主题状态  
-    const [currentTheme, setCurrentTheme] = useState<'dark' | 'system'>('system')  
+    // // 添加主题状态  
+    // const [currentTheme, setCurrentTheme] = useState<'dark' | 'system'>('system')  
       
-    // 初始化主题设置  
-    useEffect(() => {  
-        getLocalValue('yakit-theme').then((theme: string) => {  
-            if (theme === 'dark' || theme === 'system') {  
-                setCurrentTheme(theme)  
-            }  
-        })  
-    }, [])  
+    // // 初始化主题设置  
+    // useEffect(() => {  
+    //     getLocalValue('yakit-theme').then((theme: string) => {  
+    //         if (theme === 'dark' || theme === 'system') {  
+    //             setCurrentTheme(theme)  
+    //         }  
+    //     })  
+    // }, [])  
       
-    // 监听系统主题变化  
-    useEffect(() => {  
-        if (currentTheme === 'system') {  
-            const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')  
-            const handleChange = (e: MediaQueryListEvent) => {  
-                document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light')  
-            }  
+    // // 监听系统主题变化  
+    // useEffect(() => {  
+    //     if (currentTheme === 'system') {  
+    //         const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)')  
+    //         const handleChange = (e: MediaQueryListEvent) => {  
+    //             document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light')  
+    //         }  
               
-            // 初始设置  
-            handleChange(mediaQuery)  
+    //         // 初始设置  
+    //         handleChange(mediaQuery)  
               
-            mediaQuery.addEventListener('change', handleChange)  
-            return () => mediaQuery.removeEventListener('change', handleChange)  
-        }  
-    }, [currentTheme])
+    //         mediaQuery.addEventListener('change', handleChange)  
+    //         return () => mediaQuery.removeEventListener('change', handleChange)  
+    //     }  
+    // }, [currentTheme])
     
     /** ---------- 软件级功能设置 End ---------- */
 
